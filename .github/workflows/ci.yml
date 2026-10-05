@@ -28,3 +28,6 @@ jobs:
 
       - name: Build application
         run: mvn clean package
+
+      - name: Build Docker image
+        run: docker build -t devops-app:${{ github.sha }} .
