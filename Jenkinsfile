@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         AWS_REGION = 'ap-south-1'
-        ECR_REPO = '405241726253.dkr.ecr.ap-south-1.amazonaws.com/devops-app'
+        ECR_REGISTRY = '405241726253.dkr.ecr.ap-south-1.amazonaws.com'
+ECR_REPO = "${ECR_REGISTRY}/devops-app"
         EKS_CLUSTER = 'devops-eks-cluster'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
@@ -55,7 +56,7 @@ pipeline {
                           --region ${AWS_REGION} | \
                         docker login \
                           --username AWS \
-                          --password-stdin ${ECR_REPO}
+                          --password-stdin ${ECR_REGISTRY}
                     '''
                 }
             }
