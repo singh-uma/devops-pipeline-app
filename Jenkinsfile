@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_REGION = 'ap-south-1'
         ECR_REGISTRY = '405241726253.dkr.ecr.ap-south-1.amazonaws.com'
-ECR_REPO = "${ECR_REGISTRY}/devops-app"
+        ECR_REPO = "${ECR_REGISTRY}/devops-app"
         EKS_CLUSTER = 'devops-eks-cluster'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
@@ -112,11 +112,21 @@ ECR_REPO = "${ECR_REGISTRY}/devops-app"
 
         stage('Verify') {
             steps {
-                sh '''
-                    kubectl get deployment devops-app
-                    kubectl get pods -l app=devops-app
-                    kubectl get service devops-app
-                '''
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'aws-jenkins-cred',
+                        usernameVariable: 'AWS_ACCESS_KEY_ID',
+                        passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                    )
+                ]) {
+                    sh '''
+                        export AWS_DEFAULT_REGION=${AWS_REGION}
+
+                        kubectl get deployment devops-app
+                        kubectl get pods -l app=devops-app
+                        kubectl get service devops-app
+                    '''
+                }
             }
         }
     }
