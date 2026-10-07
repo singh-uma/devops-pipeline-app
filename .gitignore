@@ -6,3 +6,10 @@ target/
 .vscode/
 *.iml
 pom.xml.backup
+
+# Terraform
+**/.terraform/
+**/*.tfstate
+**/*.tfstate.*
+**/terraform.tfvars
+**/*.tfplan
